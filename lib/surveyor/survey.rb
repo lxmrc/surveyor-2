@@ -16,12 +16,12 @@ module Surveyor
       @responses << response
     end
 
-    def find_response_by_email(email)
+    def find_user_response(email)
       @responses.find { |response| response.email == email }
     end
 
-    def has_responded?(email)
-      !find_response_by_email(email).nil?
+    def user_responded?(email)
+      !find_user_response(email).nil?
     end
   end
 end

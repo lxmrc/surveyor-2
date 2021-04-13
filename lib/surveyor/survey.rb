@@ -36,6 +36,13 @@ module Surveyor
       answers.select { |answer| answer.value > 3 }
     end
 
+    def answer_breakdown
+      breakdown = answers.group_by(&:value).transform_values!(&:count)
+      breakdown.each_with_object("") do |(rating, frequency), output|
+        output << "#{rating}: #{frequency}\n"
+      end
+    end
+
     private
 
     def answers

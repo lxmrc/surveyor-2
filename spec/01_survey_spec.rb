@@ -74,5 +74,18 @@ RSpec.describe Surveyor::Survey do
         expect(subject.high_answers.count).to eq(4)
       end
     end
+
+    context "answer breakdown" do
+      it "provides a breakdown of the answers" do
+        expected_breakdown = <<~BREAKDOWN
+          1: 1
+          2: 1
+          3: 3
+          4: 2
+          5: 2
+        BREAKDOWN
+        expect(subject.answer_breakdown).to eq(expected_breakdown)
+      end
+    end
   end
 end

@@ -23,5 +23,25 @@ module Surveyor
     def user_responded?(email)
       !find_user_response(email).nil?
     end
+
+    def low_answers
+      answers.select { |answer| answer.value < 3 }
+    end
+
+    def neutral_answers
+      answers.select { |answer| answer.value == 3 }
+    end
+
+    def high_answers
+      answers.select { |answer| answer.value > 3 }
+    end
+
+    private
+
+    def answers
+      @responses.each_with_object([]) do |response, answers|
+        answers.concat(response.answers)
+      end
+    end
   end
 end

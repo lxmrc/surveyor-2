@@ -44,4 +44,35 @@ RSpec.describe Surveyor::Survey do
       expect(subject.user_responded?("alice@example.com")).to eq(false)
     end
   end
+
+  context "finding answers" do
+    before do
+      question = Surveyor::RatingQuestion.new
+      subject.add_question(question)
+      [1, 2, 3, 3, 3, 4, 4, 5, 5].each do |rating|
+        response = Surveyor::Response.new
+        answer = Surveyor::Answer.new(question, rating)
+        response.add_answer(answer)
+        subject.add_response(response)
+      end
+    end
+
+    context "low_answers" do
+      it "finds the low answers" do
+        expect(subject.low_answers.count).to eq(2)
+      end
+    end
+
+    context "neutral_answers" do
+      it "finds the neutral answers" do
+        expect(subject.neutral_answers.count).to eq(3)
+      end
+    end
+
+    context "high_answers" do
+      it "finds the high answers" do
+        expect(subject.high_answers.count).to eq(4)
+      end
+    end
+  end
 end

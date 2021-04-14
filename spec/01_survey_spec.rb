@@ -51,7 +51,7 @@ RSpec.describe Surveyor::Survey do
       subject.add_question(question)
       [1, 2, 3, 3, 3, 4, 4, 5, 5].each do |rating|
         response = Surveyor::Response.new
-        answer = Surveyor::Answer.new(question, rating)
+        answer = Surveyor::Answer.new(question: question, value: rating)
         response.add_answer(answer)
         subject.add_response(response)
       end

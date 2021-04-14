@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Surveyor::Answer do
   let(:question) { double(:question, title: "Do you like your job?") }
-  subject { described_class.new(question, "It's okay.") }
+  subject { described_class.new(question: question, value: "It's okay.") }
 
   it "has a question" do
     expect(subject.question).to eq(question)

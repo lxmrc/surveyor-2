@@ -2,9 +2,9 @@ module Surveyor
   class Answer
     attr_reader :question, :value
 
-    def initialize(question, answer)
+    def initialize(question:, value: nil)
       @question = question
-      @value = answer
+      @value = value
     end
   end
 end

@@ -14,14 +14,14 @@ RSpec.describe Surveyor::Survey do
   end
 
   it "can have responses added" do
-    response = double(:response)
+    response = Surveyor::Response.new
     subject.add_response(response)
     expect(subject.responses).to include(response)
   end
 
   context "find_user_response" do
     it "can find a response by the user's email address" do
-      response = double(:response, email: "alice@example.com")
+      response = Surveyor::Response.new(email: "alice@example.com")
       subject.add_response(response)
       expect(subject.find_user_response("alice@example.com")).to eq(response)
     end
@@ -33,7 +33,7 @@ RSpec.describe Surveyor::Survey do
 
   context "user_responded?" do
     it "returns true when the user has responded" do
-      response = double(:response, email: "alice@example.com")
+      response = Surveyor::Response.new(email: "alice@example.com")
       subject.add_response(response)
       expect(subject.user_responded?("alice@example.com")).to eq(true)
     end

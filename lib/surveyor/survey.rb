@@ -14,6 +14,7 @@ module Surveyor
 
     def add_response(response)
       @responses << response
+      cache_answers
     end
 
     def find_user_response(email)
@@ -45,11 +46,14 @@ module Surveyor
 
     private
 
-    def answers(question = nil)
-      @responses.each_with_object([]) do |response, answers|
-        selected = question ? response.answers.select { |answer| answer.question == question } : response.answers
-        answers.concat(selected)
+    def cache_answers
+      @answers = @responses.each_with_object([]) do |response, answers|
+        answers.concat(response.answers)
       end
+    end
+
+    def answers(question = nil)
+      @answers.select { |answer| answer.question == question }
     end
   end
 end

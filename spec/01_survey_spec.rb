@@ -1,5 +1,3 @@
-# Add another method that returns true or false depending on if the user has responded to this survey yet.
-
 require 'spec_helper'
 
 RSpec.describe Surveyor::Survey do
@@ -46,12 +44,22 @@ RSpec.describe Surveyor::Survey do
   end
 
   context "finding answers" do
+    let(:question1) { Surveyor::RatingQuestion.new }
+    let(:question2) { Surveyor::RatingQuestion.new }
+
     before do
-      question = Surveyor::RatingQuestion.new
-      subject.add_question(question)
-      [1, 2, 3, 3, 3, 4, 4, 5, 5].each do |rating|
+      subject.add_question(question1)
+      [1, 2, 3, 3, 3, 4, 4, 5, 5, 5].each do |rating|
         response = Surveyor::Response.new
-        answer = Surveyor::Answer.new(question: question, value: rating)
+        answer = Surveyor::Answer.new(question: question1, value: rating)
+        response.add_answer(answer)
+        subject.add_response(response)
+      end
+
+      subject.add_question(question2)
+      [1, 1, 2, 2, 3, 3, 4, 4, 4, 5].each do |rating|
+        response = Surveyor::Response.new
+        answer = Surveyor::Answer.new(question: question2, value: rating)
         response.add_answer(answer)
         subject.add_response(response)
       end
@@ -59,32 +67,44 @@ RSpec.describe Surveyor::Survey do
 
     context "low_answers" do
       it "finds the low answers" do
-        expect(subject.low_answers.count).to eq(2)
+        expect(subject.low_answers(question1).count).to eq(2)
+        expect(subject.low_answers(question2).count).to eq(4)
       end
     end
 
     context "neutral_answers" do
       it "finds the neutral answers" do
-        expect(subject.neutral_answers.count).to eq(3)
+        expect(subject.neutral_answers(question1).count).to eq(3)
+        expect(subject.neutral_answers(question2).count).to eq(2)
       end
     end
 
     context "high_answers" do
       it "finds the high answers" do
-        expect(subject.high_answers.count).to eq(4)
+        expect(subject.high_answers(question1).count).to eq(5)
+        expect(subject.high_answers(question2).count).to eq(4)
       end
     end
 
-    context "answer breakdown" do
+    context "answer_breakdown" do
       it "provides a breakdown of the answers" do
-        expected_breakdown = <<~BREAKDOWN
+        question1_breakdown = <<~BREAKDOWN
           1: 1
           2: 1
           3: 3
           4: 2
-          5: 2
+          5: 3
         BREAKDOWN
-        expect(subject.answer_breakdown).to eq(expected_breakdown)
+        expect(subject.answer_breakdown(question1)).to eq(question1_breakdown)
+
+        question2_breakdown = <<~BREAKDOWN
+          1: 2
+          2: 2
+          3: 2
+          4: 3
+          5: 1
+        BREAKDOWN
+        expect(subject.answer_breakdown(question2)).to eq(question2_breakdown)
       end
     end
   end

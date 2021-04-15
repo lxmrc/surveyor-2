@@ -66,45 +66,56 @@ RSpec.describe Surveyor::Survey do
     end
 
     context "low_answers" do
-      it "finds the low answers" do
+      it "finds the low answers for a question" do
         expect(subject.low_answers(question1).count).to eq(2)
+      end
+
+      it "finds the low answers for a different question" do
         expect(subject.low_answers(question2).count).to eq(4)
       end
     end
 
     context "neutral_answers" do
-      it "finds the neutral answers" do
+      it "finds the neutral answers for a question" do
         expect(subject.neutral_answers(question1).count).to eq(3)
+      end
+
+      it "finds the neutral answers for a different question" do
         expect(subject.neutral_answers(question2).count).to eq(2)
       end
     end
 
     context "high_answers" do
-      it "finds the high answers" do
+      it "finds the high answers for a question" do
         expect(subject.high_answers(question1).count).to eq(5)
+      end
+
+      it "finds the high answers for a different question" do
         expect(subject.high_answers(question2).count).to eq(4)
       end
     end
 
     context "answer_breakdown" do
-      it "provides a breakdown of the answers" do
-        question1_breakdown = <<~BREAKDOWN
+      it "provides a breakdown of the answers for a question" do
+        breakdown = <<~BREAKDOWN
           1: 1
           2: 1
           3: 3
           4: 2
           5: 3
         BREAKDOWN
-        expect(subject.answer_breakdown(question1)).to eq(question1_breakdown)
+        expect(subject.answer_breakdown(question1)).to eq(breakdown)
+      end
 
-        question2_breakdown = <<~BREAKDOWN
+      it "provides a breakdown of the answers for a different question" do
+        breakdown = <<~BREAKDOWN
           1: 2
           2: 2
           3: 2
           4: 3
           5: 1
         BREAKDOWN
-        expect(subject.answer_breakdown(question2)).to eq(question2_breakdown)
+        expect(subject.answer_breakdown(question2)).to eq(breakdown)
       end
     end
   end

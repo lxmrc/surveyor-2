@@ -38,21 +38,21 @@ module Surveyor
     end
 
     def answer_breakdown(question)
-      breakdown = answers(question).group_by(&:value).transform_values!(&:count)
-      breakdown.each_with_object("") do |(rating, frequency), output|
-        output << "#{rating}: #{frequency}\n"
-      end
+      answers(question)
+        .group_by(&:value)
+        .transform_values!(&:count)
+        .collect do |(value, count)|
+          "#{value}: #{count}\n"
+        end.join
     end
 
     private
 
     def cache_answers
-      @answers = @responses.each_with_object([]) do |response, answers|
-        answers.concat(response.answers)
-      end
+      @answers = @responses.map(&:answers).flatten
     end
 
-    def answers(question = nil)
+    def answers(question)
       @answers.select { |answer| answer.question == question }
     end
   end

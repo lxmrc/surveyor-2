@@ -8,7 +8,7 @@ RSpec.describe Surveyor::Response do
   end
 
   it "can have answers added" do
-    answer = double(:answer)
+    answer = Surveyor::Answer.new(question: Surveyor::Question.new)
     subject.add_answer(answer)
     expect(subject.answers).to include(answer)
   end

@@ -8,6 +8,7 @@ module Surveyor
     end
 
     def add_answer(answer)
+      raise ArgumentError, "answer should be an instance of Surveyor::Answer" unless answer.is_a? Surveyor::Answer
       @answers << answer
     end
   end
